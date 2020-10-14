@@ -234,7 +234,7 @@ func (c *Client) buildAssignment(t Topic) (*[][]int32, error) {
 	rand.Seed(time.Now().UnixNano())
 
 	assignment := make([][]int32, len(partitions))
-	for i, p := range partitions {
+	for _, p := range partitions {
 		oldReplicas, err := c.client.Replicas(t.Name, p)
 		if err != nil {
 			return &assignment, err
@@ -247,7 +247,7 @@ func (c *Client) buildAssignment(t Topic) (*[][]int32, error) {
 			return &assignment, err
 		}
 
-		assignment[i] = *newReplicas
+		assignment[p] = *newReplicas
 	}
 
 	return &assignment, nil
